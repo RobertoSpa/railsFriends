@@ -1,16 +1,8 @@
 FROM ruby:3.2.2
-
-RUN mkdir /app
+RUN apt-get update && apt-get install -y nodejs
 WORKDIR /app
-
-RUN apt-get update -qq && \
-    apt-get -y install build-essential
-
-ADD Gemfile /app/Gemfile
-ADD Gemfile.lock /app/Gemfile.lock
-
+COPY Gemfile* .
 RUN bundle install
-
+COPY . .
 EXPOSE 3000
-
-CMD [ "bundle", "exec", "rails", "s", "-b", "0.0.0.0" ]
+CMD ["rails", "server", "-b", "0.0.0.0"]
